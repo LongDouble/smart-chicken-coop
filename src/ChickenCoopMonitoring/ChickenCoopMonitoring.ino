@@ -42,7 +42,7 @@ bool daylight;
 
 //Food/water objects;
 float water_mL, food_grams;
-float distance_away = 3.1; //
+float distance_away = 3.1; //custom distance aw
 float radius = 3;
 float height = 13.6;
 float density = 0.82844; //density of chicken feed g/mL
@@ -121,6 +121,27 @@ void loop()
   temperature = rtc.getTemperature();
 
   // Food Tracking
+  float mL_val, food_distance;
+  double food_timeSignal;
+
+  //prepare clean trig pulse with writing low for 5us
+  digitalWrite(FOOD_TRIG, LOW);
+  delayMicroseconds(5);
+
+  //datasheet requires at least 10us of HIGH pulse
+  digitalWrite(FOOD_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(FOOD_TRIG, LOW);
+
+  //read length of HIGH pulse in microseconds
+  food_timeSignal = pulseIn(FOOD_ECHO, HIGH);
+
+  //use time to calculate distance in cm (speed of sound ~340m/s = 0.034cm/us, halve time taken to get one length)
+  food_distance = food_timeSignal * 0.034 / 2;
+
+  //V = L*pi*(r^2)
+  mL_val = (height + distance_away - food_distance) * (3.14159 * radius * radius);
+  food_grams = mL_val * density;
 
   // Water Tracking
   //declare mL, distance, and timeSignal
@@ -177,6 +198,25 @@ void loop()
     {
       lampLevel = 4;
       dim_track = now + TimeSpan(0, 0, 2, 0);
+    }
+    else if (lampLevel == 4 && now >= dim_track)
+    {
+      lampLevel = 3;
+      dim_track = now + TimeSpan(0, 0, 2, 0);
+    }
+    else if (lampLevel == 3 && now >= dim_track)
+    {
+      lampLevel = 2;
+      dim_track = now + TimeSpan(0, 0, 2, 0);
+    }
+    else if (lampLevel == 2 && now >= dim_track)
+    {
+      lampLevel = 1;
+      dim_track = now + TimeSpan(0, 0, 2, 0);
+    }
+    else if (lampLevel == 1 && now >= dim_track)
+    {
+      lampLevel = 0;
     }
   }
 
