@@ -9,7 +9,7 @@
 #include <RTClib.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include "Adafruit_TSL2591.h"
+#include <Adafruit_TSL2591.h>
 
 #define GREEN_PIN 2
 #define YELLOW_PIN 3
@@ -42,10 +42,12 @@ bool daylight;
 
 //Food/water objects;
 float water_mL, food_grams;
-float distance_away = 3.1; //custom distance aw
-float radius = 3;
-float height = 13.6;
-float density = 0.82844; //density of chicken feed g/mL
+float distance_away = 3.1; //custom distance for container to sensor
+float radius = 3;          //custom container radius
+float height = 13.6;       //custom container height
+float density = 0.82844;   //custom density of chicken feed g/mL
+float food_em = 63.71;     // 20% of custom maximum food mass (g)
+float water_em = 76.91;    // 20% of custom maximum water volume (mL)
 
 //Configuring gain and integration time on sensor
 void configureSensor(void)
@@ -220,19 +222,42 @@ void loop()
     }
   }
 
-  // check if 9pm or later
-  // check if heat lamp level is 5
-  // set lamp level to 4, set dim_track to 2 mins in future
-  // check if heat lamp level is 4 and time is equal to dim_track
-  // set lamp level to 3, set dim_track to 2 mins in future
-  // check if heat lamp level is 3 and time is equal to dim_track
-  // set lamp level to 2
-  // set dim_track to 2 mins in future
-  // check if heat lamp level is 2 and time is equal to dim_track
-  // set lamp level to 2
-  // set dim_track to 2 mins in future
-  // check if heat lamp level is 1 and time is equal to dim_track
-  // set lamp level to 0
+  // check if food or water is too low
+  if (water_mL <= water_em || food_grams <= food_em)
+  {
+    if (water_mL <= water_em)
+    {
+      warninglights.removeGreen();
+      warninglights.addRed();
+    }
+    else
+    {
+      warninglights.removeRed();
+    }
+    if (food_grams <= food_em)
+    {
+      //green off, add yellow
+      warninglights.removeGreen();
+      warninglights.addYellow();
+    }
+    else
+    {
+      warninglights.removeYellow();
+    }
+  }
+  else
+  {
+    warninglights.green();
+  }
+  // check if food is too low
+  // turn green light off, turn yellow light on
+  // turn yellow light off if not too low
+  // check if water is too low
+  // turn green light off, turn red light on
+  // turn red light off if not too low
+  // else, turn on green light
+
+  lamp.set(lampLevel);
 
   // SD (Format: Timestamp, Food(g), Water(mL), Temp (C), Daylight (Y/N))
 

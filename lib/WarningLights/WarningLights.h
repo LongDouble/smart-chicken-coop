@@ -18,6 +18,12 @@ public:
     void yellow();
     void red();
     void off();
+    void addGreen();
+    void addYellow();
+    void addRed();
+    void removeGreen();
+    void removeYellow();
+    void removeRed();
 };
 
 #endif
