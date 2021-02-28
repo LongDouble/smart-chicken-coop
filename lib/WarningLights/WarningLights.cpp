@@ -44,3 +44,33 @@ void WarningLights::off()
     digitalWrite(yellowPin, HIGH);
     digitalWrite(redPin, HIGH);
 }
+
+void WarningLights::addGreen()
+{
+    digitalWrite(greenPin, LOW);
+}
+
+void WarningLights::addYellow()
+{
+    digitalWrite(yellowPin, LOW);
+}
+
+void WarningLights::addRed()
+{
+    digitalWrite(redPin, LOW);
+}
+
+void WarningLights::removeGreen()
+{
+    digitalWrite(greenPin, HIGH);
+}
+
+void WarningLights::removeYellow()
+{
+    digitalWrite(yellowPin, HIGH);
+}
+
+void WarningLights::removeRed()
+{
+    digitalWrite(redPin, HIGH);
+}
