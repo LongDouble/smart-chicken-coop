@@ -25,12 +25,20 @@
 
 File myFile;
 bool headerFlag = false;
+float temperature;
 
 Lamp lamp(LAMP_PIN);
 WarningLights warninglights(GREEN_PIN, YELLOW_PIN, RED_PIN);
+DateTime future, now;
 
-Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
 RTC_DS3231 rtc;
+
+//Daylight sensor objects
+Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
+uint32_t lum;
+uint16_t ir, full;
+float lux;
+bool daylight;
 
 // the setup routine runs once when you press reset:
 void setup()
@@ -56,6 +64,7 @@ void setup()
     // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
 
+  future = rtc.now();
   // When time needs to be re-set on a previously configured device, the
   // following line sets the RTC to the date & time this sketch was compiled
   // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
@@ -77,15 +86,21 @@ void setup()
   delay(2000);
 
   warninglights.off();
+  lamp.set(0);
+
+  //initialize echo/trigger pins for food and water
+  pinMode(FOOD_TRIG, OUTPUT);
+  pinMode(FOOD_ECHO, INPUT);
+  pinMode(WATER_TRIG, OUTPUT);
+  pinMode(WATER_ECHO, INPUT);
 }
 
 // the loop routine runs over and over again forever:
 void loop()
 {
 
-  SD.begin(SD_PIN); // Initializes the SD
-
   // Timestamp / Temperature
+  now = rtc.now();
 
   // Food / Water Tracking
 
@@ -93,7 +108,15 @@ void loop()
 
   // Heat Lamp
 
-  // SD
+  // SD (Format: Timestamp, Food(g), Water(mL), Temp (C), Daylight (Y/N))
+  SD.begin(SD_PIN);
+  // if now.hour() == future.hour()
+  if (now.hour() >= future.hour())
+  {
+    future = now + TimeSpan(0, 1, 0, 0);
+    // Log data to SD card
+  }
+  //DateTime future = now.hour() + an hour
 
   delay(1000); // delay in between reads for stability
 }
