@@ -285,6 +285,7 @@ void loop()
       myFile.print(now.minute());
       myFile.print('/');
       myFile.print(now.second());
+
       myFile.print(",");
 
       myFile.print(food_grams); // Food
