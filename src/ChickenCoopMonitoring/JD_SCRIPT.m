@@ -22,8 +22,9 @@ end
 sdate = sdate';
 food = data.data(:,1);
 water = data.data(:,2);
+daylight = data.data(:,4);
 
-tiledlayout(2,1)
+tiledlayout(3,1)
 
 nexttile
 plot(sdate,food)
@@ -34,3 +35,8 @@ nexttile
 plot(sdate,water)
 title('Water Level (mL)')
 datetick('x','HHPM')
+
+nexttile
+plot(sdate,daylight)
+datetick('x','HHPM')
+title('Daylight (Y/N)')
