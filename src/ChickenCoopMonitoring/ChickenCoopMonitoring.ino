@@ -1,7 +1,6 @@
 /*
   Chicken Coop Monitoring System
 */
-
 #include <Lamp.h>
 #include <WarningLights.h>
 #include <RTClib.h>
@@ -183,37 +182,56 @@ void loop()
   {
     lampLevel = 5;
   }
+  // check if 9pm or later
   else if (now.hour() >= 21)
   {
+    // if 9pm or later and heat lamp is on level 5
     if (lampLevel == 5)
     {
       lampLevel = 4;
+
+      // set next dim level to two minutes in future
       dim_track = now + TimeSpan(0, 0, 2, 0);
     }
+    // if after 9pm, heat lamp is on level 4, and 2 minutes has passed
     else if (lampLevel == 4 && now >= dim_track)
     {
       lampLevel = 3;
+
+      // set next dim level to two minutes in future
       dim_track = now + TimeSpan(0, 0, 2, 0);
     }
+    // if after 9pm, heat lamp is on level 3, and 2 minutes has passed
     else if (lampLevel == 3 && now >= dim_track)
     {
       lampLevel = 2;
+
+      // set next dim level to two minutes in future
       dim_track = now + TimeSpan(0, 0, 2, 0);
     }
+    // if after 9pm, heat lamp is on level 2, and 2 minutes has passed
     else if (lampLevel == 2 && now >= dim_track)
     {
       lampLevel = 1;
+
+      // set next dim level to two minutes in future
       dim_track = now + TimeSpan(0, 0, 2, 0);
     }
+    // if after 9pm, heat lamp is on level 1, and 2 minutes has passed
     else if (lampLevel == 1 && now >= dim_track)
     {
-      lampLevel = 0;
+      lampLevel = 0; // turn lamp off
     }
   }
+
+  // set lamp to appropriate level
+  lamp.set(lampLevel);
 
   // check if food or water is too low
   if (water_mL <= water_em || food_grams <= food_em)
   {
+
+    // check if red light should be on
     if (water_mL <= water_em)
     {
       warninglights.removeGreen();
@@ -223,6 +241,8 @@ void loop()
     {
       warninglights.removeRed();
     }
+
+    // check if yellow light should be on
     if (food_grams <= food_em)
     {
       //green off, add yellow
@@ -234,19 +254,12 @@ void loop()
       warninglights.removeYellow();
     }
   }
+
+  // no water or food shortage, turn on green light
   else
   {
     warninglights.green();
   }
-  // check if food is too low
-  // turn green light off, turn yellow light on
-  // turn yellow light off if not too low
-  // check if water is too low
-  // turn green light off, turn red light on
-  // turn red light off if not too low
-  // else, turn on green light
-
-  lamp.set(lampLevel);
 
   // SD (Format: Timestamp, Food(g), Water(mL), Temp (C), Daylight (Y/N))
 
