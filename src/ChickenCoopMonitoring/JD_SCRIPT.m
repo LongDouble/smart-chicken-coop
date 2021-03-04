@@ -1,8 +1,6 @@
 clear all
 
-%data = csvread('test.csv', 0, 1);
 data = importdata('test.csv')
-% Timestamp, Food, Water, Temperature, Daylight
 
 data.textdata;
 data.data;
@@ -13,6 +11,8 @@ for ii = 1:size(data.textdata)
     tmp1 = str2double(tmp1);
     sdate(ii) = datenum(tmp1(1),tmp1(2),tmp1(3),tmp1(4),tmp1(5),tmp1(6));
     
+    % For some reason, the first year value isn't recorded properly
+    % Manually sets this to be 2021
     if (ii == 1) 
        sdate(ii) =  datenum(2021,tmp1(2),tmp1(3),tmp1(4),tmp1(5),tmp1(6));
     end
@@ -22,8 +22,9 @@ end
 sdate = sdate';
 food = data.data(:,1);
 water = data.data(:,2);
+daylight = data.data(:,4);
 
-tiledlayout(2,1)
+tiledlayout(3,1)
 
 nexttile
 plot(sdate,food)
@@ -34,3 +35,8 @@ nexttile
 plot(sdate,water)
 title('Water Level (mL)')
 datetick('x','HHPM')
+
+nexttile
+plot(sdate,daylight)
+datetick('x','HHPM')
+title('Daylight (Y/N)')
