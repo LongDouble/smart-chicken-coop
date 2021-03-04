@@ -1,7 +1,7 @@
 /*
   Chicken Coop Monitoring System
-
 */
+
 #include <Lamp.h>
 #include <WarningLights.h>
 #include <RTClib.h>
@@ -24,14 +24,16 @@
 #define WATER_ECHO 17
 
 File myFile;
-float temperature;
-int lampLevel;
 
+// Heat lamp objects
 Lamp lamp(LAMP_PIN);
 WarningLights warninglights(GREEN_PIN, YELLOW_PIN, RED_PIN);
-DateTime future, now, dim_track;
+int lampLevel;
 
+// DS3231 objects
 RTC_DS3231 rtc;
+DateTime future, now, dim_track;
+float temperature;
 
 //Daylight sensor objects
 Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
@@ -49,7 +51,7 @@ float density = 0.82844;   //custom density of chicken feed g/mL
 float food_em = 63.71;     // 20% of custom maximum food mass (g)
 float water_em = 76.91;    // 20% of custom maximum water volume (mL)
 
-//Configuring gain and integration time on sensor
+//Configuring gain and integration time on daylight sensor
 void configureSensor(void)
 {
   //setting gain on the TSL2591 to average lighting setting
@@ -59,7 +61,6 @@ void configureSensor(void)
   tsl.setTiming(TSL2591_INTEGRATIONTIME_500MS);
 }
 
-// the setup routine runs once when you press reset:
 void setup()
 {
   // initialize serial communication at 9600 bits per second:
@@ -75,21 +76,10 @@ void setup()
   if (rtc.lostPower())
   {
     Serial.println("RTC lost power, let's set the time!");
-    // When time needs to be set on a new device, or after a power loss, the
-    // following line sets the RTC to the date & time this sketch was compiled
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    // This line sets the RTC with an explicit date & time, for example to set
-    // January 21, 2014 at 3am you would call:
-    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
 
   future = rtc.now();
-  // When time needs to be re-set on a previously configured device, the
-  // following line sets the RTC to the date & time this sketch was compiled
-  // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  // This line sets the RTC with an explicit date & time, for example to set
-  // January 21, 2014 at 3am you would call:
-  // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
 
   // set lamp to highest power
   lamp.set(5);
@@ -114,7 +104,6 @@ void setup()
   pinMode(WATER_ECHO, INPUT);
 }
 
-// the loop routine runs over and over again forever:
 void loop()
 {
 
