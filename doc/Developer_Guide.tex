@@ -60,21 +60,29 @@
 
 \section{System Overview}
 The smart chicken coop monitoring system provides the user with an easier experience when taking care of chickens with its food and water monitoring system, autonomous heat lamp control, and warning lights for user intervention. Using real time clocks, as well as ultrasonic and daylight tracking sensors, the system is able to track the food and water levels, adjust the heat lamp for the chickens depending on the time of day, as well as warn the user if the resource levels are too low. All of this data is logged to an SD card, allowing the user to check the coop's conditions for several weeks.
-\section{Electrical Specifications}
+
+\vspace{2.54cm}
 
 \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/title-picture.jpg}
+\end{figure}
+
+\section{Electrical Specifications}
+
+\begin{table}[H]
     \centering
     \includegraphics[width=\textwidth]{fig/electrical-chars-1.pdf}
     \caption{First table of electrical characteristics}
     \label{fig:electric-char-1}
-\end{figure}
+\end{table}
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
     \includegraphics[width=\textwidth]{fig/electrical-chars-2.pdf}
     \caption{Second table of elecrical characteristics}
     \label{fig:electric-char-2}
-\end{figure}
+\end{table}
 
 
 \section{User Guide}
@@ -92,7 +100,7 @@ The food and water sensors are ultrasonic sensors that detect how far away the f
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{fig/sensor-setup.jpg}
+    \includegraphics[width=0.7\textwidth]{fig/sensor-setup.jpg}
     \caption{Food and water sensor setup}
     \label{fig:sensor-setup}
 \end{figure}
@@ -103,7 +111,7 @@ After connecting all external sensors and lights, an SD card must be inserted in
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{fig/sd-setup.jpg}
+    \includegraphics[width=0.7\textwidth]{fig/sd-setup.jpg}
     \caption{SD card location}
     \label{fig:sd-card-location}
 \end{figure}
@@ -135,7 +143,7 @@ Once locating this file, locate the MATLAB Code file titled “JD\_SCRIPT.” Co
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{fig/example-graph.png}
+    \includegraphics[width=0.7\textwidth]{fig/example-graph.png}
     \caption{Example graph after filling food and water}
     \label{fig:example-graph}
 \end{figure}
@@ -246,6 +254,34 @@ Interface                        & Details                                   \\*
     \caption{Complete schematic of the chicken coop monitoring system.  The entire system is powered from a single 120 VAC wall outlet and uses a custom PCB to connect external sensors to the Arduino Nano.  This schematic also shows which conductors of the waterproof Conxall connectors are used.}
     \label{fig:schematic}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/enclosure-1.png}
+        \caption[]%
+        {}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/enclosure-2.png}
+        \caption[]%
+        {}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/enclosure-3.png}
+        \caption[]%
+        {}
+    \end{subfigure} 
+    \hfill
+    \caption{3-D model of the chicken coop monitoring system enclosure. The enclosure is designed to safely contain all the circuitry necessary for the system to operate.  The thick walls, floor, and roof of the enclosure increase the strength of the enclosure to allow for additional mounting points to be drilled if needed.} 
+    \label{fig:enclosure-model}
+\end{figure}
+
 
 % 3d model
 \section{PCB Information}
