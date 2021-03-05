@@ -1,0 +1,393 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{minted}
+\usepackage{verbatim}
+\usepackage{framed}
+\usepackage[a4paper, top=2.54cm, bottom=2.54cm, left=2.54cm, right=2.54cm, marginparwidth=1.75cm]{geometry}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{../bibliography.bib}
+\usepackage{csquotes}
+\usepackage[longtable]{multirow}
+\usepackage{longtable}
+
+
+\definecolor{backcolor}{rgb}{0.90,0.90,0.90}
+
+%Use this environment for code that spans multiple pages
+\newenvironment{longlisting}{\captionsetup{type=listing}}{}
+
+\usemintedstyle{
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    bgcolor=backcolor,
+    fontsize=\footnotesize,
+    linenos
+}
+
+\begin{document}
+
+\begin{centering}
+
+{\scshape\Large {Junior Design II (Winter 2021)} \par}
+\vspace{2cm}
+
+{\huge\textit{Chicken Coop Monitoring System Developer Guide} \par}
+\vspace{.5cm}
+
+{\large{Austin Goergen}\par}
+{\large{Alyssa Estenson}\par}
+{\large{Bryson Goto}\par}
+{\large{Ali Mohamed Alhabshi}\par}
+\vspace{3cm}
+
+\vspace{.3cm}
+
+
+\end{centering}
+
+\pagebreak
+
+\section{System Overview}
+The smart chicken coop monitoring system provides the user with an easier experience when taking care of chickens with its food and water monitoring system, autonomous heat lamp control, and warning lights for user intervention. Using real time clocks, as well as ultrasonic and daylight tracking sensors, the system is able to track the food and water levels, adjust the heat lamp for the chickens depending on the time of day, as well as warn the user if the resource levels are too low. All of this data is logged to an SD card, allowing the user to check the coop's conditions for several weeks.
+
+\vspace{2.54cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/title-picture.jpg}
+\end{figure}
+
+\section{Electrical Specifications}
+
+\begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/electrical-chars-1.pdf}
+    \caption{First table of electrical characteristics}
+    \label{fig:electric-char-1}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/electrical-chars-2.pdf}
+    \caption{Second table of elecrical characteristics}
+    \label{fig:electric-char-2}
+\end{table}
+
+
+\section{User Guide}
+\subsection{Initial Setup}
+To begin setup of the chicken coop monitoring system, start by connecting the external warning lights, food sensor, water sensor, and heat lamp to the appropriate connectors shown in figure \ref{fig:front-connector}.  The daylight sensor comes pre-installed in the system enclosure and must remain unobstructed in order to work properly.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/panel-labels.png}
+    \caption{Front connector labels}
+    \label{fig:front-connector}
+\end{figure}
+
+The food and water sensors are ultrasonic sensors that detect how far away the food or water is.  They should be positioned directly above the food or water without any additional obstructions in front of them as shown in figure \ref{fig:sensor-setup}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig/sensor-setup.jpg}
+    \caption{Food and water sensor setup}
+    \label{fig:sensor-setup}
+\end{figure}
+
+The chicken coop monitoring system can use any heat lamp with a NEMA 5-15P connector.  The heat lamp can be plugged into either of the electrical outlets connected to the system.  If desired, two smaller heat lamps can be used instead as long as their combined power draw is no more than 180 watts.
+
+After connecting all external sensors and lights, an SD card must be inserted into the SD card slot shown in figure \ref{fig:sd-card-location} so that the system can log data.  Note that the SD card can be removed at any time during system operation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig/sd-setup.jpg}
+    \caption{SD card location}
+    \label{fig:sd-card-location}
+\end{figure}
+
+\subsection{Booting Up the System}
+The system is powered using a C13 power cord.  Plug one end of the chord into a wall outlet and the other end into the chicken coop monitoring system.  Flip the power switch and verify that a red light is illuminated under the switch.
+
+The system will perform its initialization sequence after the power switch is flipped.  The system will turn the heat lamp on full power and turn on each warning light for a short period of time to verify they are connected properly.  The system is now monitoring and logging food and water levels, determining if any warning lights need to be turned on, and tracking time to determine when the heat lamp should be turned on or dimmed.
+
+\subsection{Interpretting Warning Lights and Heat Lamp Behavior}
+The Chicken Monitoring System utilizes a signal tower with three lights triggered at different conditions. The following conditions signal when resources are stable, or require attention for refill. Specifically, the lights represent the following, in order from top to bottom on the tower:
+
+\begin{itemize}
+    \item Red: Food is below 20\% of full capacity, and requires a refill.
+    \item Yellow: Water is below 20\% of full capacity, and requires a refill.
+    \item Green: All resources are at a sufficient level.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/green.jpg}
+        \caption[]%
+        {Food and water above 20\%}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/yellow.jpg}
+        \caption[]%
+        {Food below 20\%}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/red.jpg}
+        \caption[]%
+        {Water below 20\%}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/red-yellow.jpg}
+        \caption[]%
+        {Food and water below 20\%}
+        \label{fig:red-yellow}
+    \end{subfigure} 
+    \caption{Warning lights indicating all possible food and water level combinations} 
+    \label{fig:warning-lights}
+\end{figure}
+
+
+Note that if multiple resources require attention, both the red and yellow lights may trigger (see figure \ref{fig:red-yellow}). Once the system detects the resources are filled to a higher capacity, the red and/or yellow lights will shut off. If resources no longer require attention, the green light should always be on.
+
+The heat lamp attached to the system is controlled by the time of day. In order to account for both the lowering temperature and loss of daylight, the heat lamp is set to turn on at 3:00pm. To consistently provide 14 hours of light for the chicken coop, the time period most optimal for laying eggs, the heat lamp is set to begin its shutdown sequence at 9:00pm. The sequence lasts 10 minutes, dimming to one of five discrete brightness levels every 2 minutes. This provides time for chickens to return to their roosting stick.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/heat-lamp-off.jpg}
+        \caption[]%
+        {Heat lamp off}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/heat-lamp-on.png}
+        \caption[]%
+        {Heat lamp on}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \caption{Heat lamp in both the fully off and fully on state} 
+    \label{fig:heat-lamp}
+\end{figure}
+
+\subsection{Viewing Logged Data}
+The data logged for resource consumption and daylight hours over the past two weeks is automatically written to the SD card while it is connected to the system. In order to see this information logged onto a graph, you may eject the SD card at any time, without needing to reboot the system.
+
+Once the SD card is ejected from it’s extender module, insert the SD card into your computer. The file containing the resource and daylight data is a type .csv, titled “TEST.” This is the only file on the SD card the enclosure interacts with.
+
+Once locating this file, locate the MATLAB Code file titled “JD\_SCRIPT.” Copy the “TEST.csv” file to the same directory where “JD\_SCRIPT” is located. Open the file in MATLAB, run the script, and a figure showing the data should appear, similar to the one below in Figure GRAPH.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig/example-graph.png}
+    \caption{Example graph after filling food and water}
+    \label{fig:example-graph}
+\end{figure}
+
+When the SD card is reinserted into the system after viewing, data will automatically continue to be updated to the card. However, note that for any measurement period where the card is not present in the system, the measured data will not be logged. If desired, the “TEST” file may be deleted at any time on the SD card, and the system will simply create another.
+\newpage
+
+\section{Design Artifact Figures}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/block-diagram.pdf}
+    \caption{Complete block diagram of the chicken coop monitoring system. An enclosure block is included to demonstrate which blocks of the system are located inside or outside of the custom enclosure.  Environmental inputs and outputs are also shown to better illustrate overall system operation.}
+    \label{fig:block-diagram}
+\end{figure}
+
+\begin{longtable}{|l|l|} 
+\hline
+Interface                        & Details                                   \\* 
+\hline
+\multirow{4}{*}{MAIN\_ACPWR}     & V(nominal) = 120 VAC                      \\*
+                                 & I(peak): 15 A                             \\*
+                                 & I(nominal): 1.4 A                         \\*
+                                 & Connector: NEMA 5-15R                     \\* 
+\hline
+\multirow{4}{*}{120V\_ACPWR}     & V(nominal) = 120 VAC                      \\*
+                                 & I(peak): 10 A                             \\*
+                                 & I(nominal): 1.4 A                         \\*
+                                 & Other: 2 A Fuse                           \\* 
+\hline
+\multirow{3}{*}{12V\_DCPWR}      & V(nominal) = 12 VDC                       \\*
+                                 & I(nominal): 300 mA                        \\*
+                                 & Connector: 2.1x5.5mm Barrel Jack          \\* 
+\hline
+\multirow{3}{*}{5V\_DCPWR}       & V(nominal) = 5 VDC                        \\*
+                                 & I(nominal): 70 mA                         \\*
+                                 & Connector(s): Dupont                      \\* 
+\hline
+\multirow{5}{*}{FOOD\_DSIG}      & Logic-Level: +5 V (High), 0 V (Low)       \\*
+                                 & Input trigger signal: 10us TTL impulse    \\*
+                                 & Echo signal: Output TTL PWL signal        \\*
+                                 & Connector: 4 POS Micro-Con-X              \\*
+                                 & Wire: 22 AWG                              \\* 
+\hline
+\multirow{5}{*}{WATER\_DSIG}     & Logic-Level: +5 V (High), 0 V (Low)       \\*
+                                 & Echo signal: Output TTL PWL signal        \\*
+                                 & Input trigger signal: 10us TTL impulse    \\*
+                                 & Connector: 4 POS Micro-Con-X              \\*
+                                 & Wire: 22 AWG                              \\* 
+\hline
+\multirow{3}{*}{DIMMER\_PWM}     & Control Signal Type: PWM                  \\*
+                                 & Logic-Level: +3.3V - 5V (High), 0V (Low)  \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{4}{*}{RELAY\_DSIG}     & Logic-level: +5 V                         \\*
+                                 & Logic-type: Active low                    \\*
+                                 & Other: 3 channel (1 / Warning Light)      \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{RTC\_DSIG}       & Protocol: I2C                             \\*
+                                 & Logic Level: +5 V (High), 0 V (Low)       \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{SD\_DSIG}        & Logic Level: +5V                          \\*
+                                 & Protocol: SPI (CS, DI, DO, CLK)           \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{DAYLIGHT\_DSIG}  & Protocol: I2C                             \\*
+                                 & Logic Level: +5V (High), 0V (Low)         \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{SYSTEM\_CODE}    & Language: C++                             \\*
+                                 & Library: Arduino                          \\*
+                                 & Storage Type: Flash Memory                \\* 
+\hline
+\multirow{6}{*}{DIMMER\_ACPWR}   & V(nominal) = 120 VAC                      \\*
+                                 & I(nominal): 1 A                           \\*
+                                 & V(avg) = 0VAC - 120VAC                    \\*
+                                 & Connector: 3 POS Multi-Con-X              \\*
+                                 & Wire: 14/2 Romex                          \\*
+                                 & Dimming Method: Phase                     \\* 
+\hline
+\multirow{4}{*}{WARNING\_DCPWR}  & V(nominal) = 12 VDC                       \\*
+                                 & I(nominal): 170 mA                        \\*
+                                 & Connector: 4 POS Micro-Con-X              \\*
+                                 & State: Normally Open                      \\* 
+\hline
+\multirow{2}{*}{FOOD\_ENVIN}     & Detection Distance: 2cm - 450cm           \\*
+                                 & Resolution: 0.3cm                         \\* 
+\hline
+\multirow{2}{*}{WATER\_ENVIN}    & Detection Distance: 2cm - 450cm           \\*
+                                 & Resolution: 0.3cm                         \\* 
+\hline
+\multirow{2}{*}{HEAT\_ENVOUT}    & Heat: 125W                                \\*
+                                 & State: Dimmable                           \\* 
+\hline
+\multirow{2}{*}{WARN\_ENVOUT}    & Lights: Red, Yellow, Green                \\*
+                                 & State: Steady                             \\* 
+\hline
+\multirow{2}{*}{DAYLIGHT\_ENVIN} & Detection: 188 uLux - 88 kLux             \\*
+                                 & Dynamic Range: 600,000,000 : 1            \\
+\hline
+\caption{Complete interface definitions for the chicken coop monitoring system.  Each interface definition provides a detailed view of how the entire system is connected together. Every definition in this table corresponds to a definition shown in the block diagram above.}
+\end{longtable}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/schematic.pdf}
+    \caption{Complete schematic of the chicken coop monitoring system.  The entire system is powered from a single 120 VAC wall outlet and uses a custom PCB to connect external sensors to the Arduino Nano.  This schematic also shows which conductors of the waterproof Conxall connectors are used.}
+    \label{fig:schematic}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/enclosure-1.png}
+        \caption[]%
+        {}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/enclosure-2.png}
+        \caption[]%
+        {}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/enclosure-3.png}
+        \caption[]%
+        {}
+    \end{subfigure} 
+    \hfill
+    \caption{3-D model of the chicken coop monitoring system enclosure. The enclosure is designed to safely contain all the circuitry necessary for the system to operate.  The thick walls, floor, and roof of the enclosure increase the strength of the enclosure to allow for additional mounting points to be drilled if needed.} 
+    \label{fig:enclosure-model}
+\end{figure}
+
+\newpage
+
+\section{PCB Information}
+The custom PCB implemented in the chicken coop monitoring system is 2.65 inches X 2.05 inches and features 0.13 inch drill holes for easy mounting.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/pcb-mechanical.pdf}
+        \caption[]%
+        {PCB dimensions}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/pcb-front.jpg}
+        \caption[]%
+        {Front of the PCB}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/pcb-back.jpg}
+        \caption[]%
+        {Back of the PCB}
+    \end{subfigure} 
+    \hfill
+    \caption{PCB dimensions and photos} 
+    \label{fig:pcb}
+\end{figure}
+
+\section{Part Information}
+\begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/part-info-1.pdf}
+    \caption{First table of part information}
+    \label{fig:part-1}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/part-info-2.pdf}
+    \caption{Second table of part information}
+    \label{fig:part-2}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/part-info-3.pdf}
+    \caption{Third table of part information}
+    \label{fig:part-3}
+\end{table}
+\end{document}
