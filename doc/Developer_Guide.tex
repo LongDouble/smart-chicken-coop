@@ -130,9 +130,64 @@ The Chicken Monitoring System utilizes a signal tower with three lights triggere
     \item Green: All resources are at a sufficient level.
 \end{itemize}
 
-Note that if multiple resources require attention, both the red and yellow lights may trigger. Once the system detects the resources are filled to a higher capacity, the red and/or yellow lights will shut off. If resources no longer require attention, the green light should always be on.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/green.jpg}
+        \caption[]%
+        {Food and water above 20\%}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/yellow.jpg}
+        \caption[]%
+        {Food below 20\%}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/red.jpg}
+        \caption[]%
+        {Water below 20\%}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/red-yellow.jpg}
+        \caption[]%
+        {Food and water below 20\%}
+        \label{fig:red-yellow}
+    \end{subfigure} 
+    \caption{Warning lights indicating all possible food and water level combinations} 
+    \label{fig:warning-lights}
+\end{figure}
+
+
+Note that if multiple resources require attention, both the red and yellow lights may trigger (see figure \ref{fig:red-yellow}). Once the system detects the resources are filled to a higher capacity, the red and/or yellow lights will shut off. If resources no longer require attention, the green light should always be on.
 
 The heat lamp attached to the system is controlled by the time of day. In order to account for both the lowering temperature and loss of daylight, the heat lamp is set to turn on at 3:00pm. To consistently provide 14 hours of light for the chicken coop, the time period most optimal for laying eggs, the heat lamp is set to begin its shutdown sequence at 9:00pm. The sequence lasts 10 minutes, dimming to one of five discrete brightness levels every 2 minutes. This provides time for chickens to return to their roosting stick.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/heat-lamp-off.jpg}
+        \caption[]%
+        {Heat lamp off}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/heat-lamp-on.png}
+        \caption[]%
+        {Heat lamp on}
+    \end{subfigure} 
+    \vskip\baselineskip
+    \caption{Heat lamp in both the fully off and fully on state} 
+    \label{fig:heat-lamp}
+\end{figure}
 
 \subsection{Viewing Logged Data}
 The data logged for resource consumption and daylight hours over the past two weeks is automatically written to the SD card while it is connected to the system. In order to see this information logged onto a graph, you may eject the SD card at any time, without needing to reboot the system.
