@@ -51,6 +51,12 @@
 {\large{Ali Mohamed Alhabshi}\par}
 \vspace{3cm}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/cover-photo.jpg}
+\end{figure}
+
+
 \vspace{.3cm}
 
 
@@ -125,8 +131,8 @@ The system will perform its initialization sequence after the power switch is fl
 The Chicken Monitoring System utilizes a signal tower with three lights triggered at different conditions. The following conditions signal when resources are stable, or require attention for refill. Specifically, the lights represent the following, in order from top to bottom on the tower:
 
 \begin{itemize}
-    \item Red: Food is below 20\% of full capacity, and requires a refill.
-    \item Yellow: Water is below 20\% of full capacity, and requires a refill.
+    \item Red: Water is below 20\% of full capacity, and requires a refill.
+    \item Yellow: Food is below 20\% of full capacity, and requires a refill.
     \item Green: All resources are at a sufficient level.
 \end{itemize}
 
@@ -194,7 +200,7 @@ The data logged for resource consumption and daylight hours over the past two we
 
 Once the SD card is ejected from it’s extender module, insert the SD card into your computer. The file containing the resource and daylight data is a type .csv, titled “TEST.” This is the only file on the SD card the enclosure interacts with.
 
-Once locating this file, locate the MATLAB Code file titled “JD\_SCRIPT.” Copy the “TEST.csv” file to the same directory where “JD\_SCRIPT” is located. Open the file in MATLAB, run the script, and a figure showing the data should appear, similar to the one below in Figure GRAPH.
+Once locating this file, locate the MATLAB Code file titled “JD\_SCRIPT.” Copy the “TEST.csv” file to the same directory where “JD\_SCRIPT” is located. Open the file in MATLAB, run the script, and a figure showing the data should appear, similar to the one below in figure \ref{fig:example-graph}.
 
 \begin{figure}[H]
     \centering
