@@ -17,6 +17,9 @@
 \usepackage[style=ieee]{biblatex}
 \addbibresource{../bibliography.bib}
 \usepackage{csquotes}
+\usepackage[longtable]{multirow}
+\usepackage{longtable}
+
 
 \definecolor{backcolor}{rgb}{0.90,0.90,0.90}
 
@@ -145,10 +148,98 @@ When the SD card is reinserted into the system after viewing, data will automati
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{fig/block-diagram.pdf}
-    \caption{Complete block diagram of the chicken coop monitoring system.}
+    \caption{Complete block diagram of the chicken coop monitoring system. An enclosure block is included to demonstrate which blocks of the system are located inside or outside of the custom enclosure.  Environmental inputs and outputs are also shown to better illustrate overall system operation.}
     \label{fig:block-diagram}
 \end{figure}
 
+\begin{longtable}{|l|l|} 
+\hline
+Interface                        & Details                                   \\* 
+\hline
+\multirow{4}{*}{MAIN\_ACPWR}     & V(nominal) = 120 VAC                      \\*
+                                 & I(peak): 15 A                             \\*
+                                 & I(nominal): 1.4 A                         \\*
+                                 & Connector: NEMA 5-15R                     \\* 
+\hline
+\multirow{4}{*}{120V\_ACPWR}     & V(nominal) = 120 VAC                      \\*
+                                 & I(peak): 10 A                             \\*
+                                 & I(nominal): 1.4 A                         \\*
+                                 & Other: 2 A Fuse                           \\* 
+\hline
+\multirow{3}{*}{12V\_DCPWR}      & V(nominal) = 12 VDC                       \\*
+                                 & I(nominal): 300 mA                        \\*
+                                 & Connector: 2.1x5.5mm Barrel Jack          \\* 
+\hline
+\multirow{3}{*}{5V\_DCPWR}       & V(nominal) = 5 VDC                        \\*
+                                 & I(nominal): 70 mA                         \\*
+                                 & Connector(s): Dupont                      \\* 
+\hline
+\multirow{5}{*}{FOOD\_DSIG}      & Logic-Level: +5 V (High), 0 V (Low)       \\*
+                                 & Input trigger signal: 10us TTL impulse    \\*
+                                 & Echo signal: Output TTL PWL signal        \\*
+                                 & Connector: 4 POS Micro-Con-X              \\*
+                                 & Wire: 22 AWG                              \\* 
+\hline
+\multirow{5}{*}{WATER\_DSIG}     & Logic-Level: +5 V (High), 0 V (Low)       \\*
+                                 & Echo signal: Output TTL PWL signal        \\*
+                                 & Input trigger signal: 10us TTL impulse    \\*
+                                 & Connector: 4 POS Micro-Con-X              \\*
+                                 & Wire: 22 AWG                              \\* 
+\hline
+\multirow{3}{*}{DIMMER\_PWM}     & Control Signal Type: PWM                  \\*
+                                 & Logic-Level: +3.3V - 5V (High), 0V (Low)  \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{4}{*}{RELAY\_DSIG}     & Logic-level: +5 V                         \\*
+                                 & Logic-type: Active low                    \\*
+                                 & Other: 3 channel (1 / Warning Light)      \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{RTC\_DSIG}       & Protocol: I2C                             \\*
+                                 & Logic Level: +5 V (High), 0 V (Low)       \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{SD\_DSIG}        & Logic Level: +5V                          \\*
+                                 & Protocol: SPI (CS, DI, DO, CLK)           \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{DAYLIGHT\_DSIG}  & Protocol: I2C                             \\*
+                                 & Logic Level: +5V (High), 0V (Low)         \\*
+                                 & Connector: Dupont                         \\* 
+\hline
+\multirow{3}{*}{SYSTEM\_CODE}    & Language: C++                             \\*
+                                 & Library: Arduino                          \\*
+                                 & Storage Type: Flash Memory                \\* 
+\hline
+\multirow{6}{*}{DIMMER\_ACPWR}   & V(nominal) = 120 VAC                      \\*
+                                 & I(nominal): 1 A                           \\*
+                                 & V(avg) = 0VAC - 120VAC                    \\*
+                                 & Connector: 3 POS Multi-Con-X              \\*
+                                 & Wire: 14/2 Romex                          \\*
+                                 & Dimming Method: Phase                     \\* 
+\hline
+\multirow{4}{*}{WARNING\_DCPWR}  & V(nominal) = 12 VDC                       \\*
+                                 & I(nominal): 170 mA                        \\*
+                                 & Connector: 4 POS Micro-Con-X              \\*
+                                 & State: Normally Open                      \\* 
+\hline
+\multirow{2}{*}{FOOD\_ENVIN}     & Detection Distance: 2cm - 450cm           \\*
+                                 & Resolution: 0.3cm                         \\* 
+\hline
+\multirow{2}{*}{WATER\_ENVIN}    & Detection Distance: 2cm - 450cm           \\*
+                                 & Resolution: 0.3cm                         \\* 
+\hline
+\multirow{2}{*}{HEAT\_ENVOUT}    & Heat: 125W                                \\*
+                                 & State: Dimmable                           \\* 
+\hline
+\multirow{2}{*}{WARN\_ENVOUT}    & Lights: Red, Yellow, Green                \\*
+                                 & State: Steady                             \\* 
+\hline
+\multirow{2}{*}{DAYLIGHT\_ENVIN} & Detection: 188 uLux - 88 kLux             \\*
+                                 & Dynamic Range: 600,000,000 : 1            \\
+\hline
+\caption{Complete interface definitions for the chicken coop monitoring system.  Each interface definition provides a detailed view of how the entire system is connected together. Every definition in this table corresponds to a definition shown in the block diagram above.}
+\end{longtable}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{fig/schematic.pdf}
@@ -156,7 +247,6 @@ When the SD card is reinserted into the system after viewing, data will automati
     \label{fig:schematic}
 \end{figure}
 
-% interface definitions
 % 3d model
 \section{PCB Information}
 \section{Part Information}
