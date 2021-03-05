@@ -6,6 +6,7 @@ data.textdata;
 data.data;
 data.rowheaders;
 
+% Reads timestamp, splits it up, converts to integer for each row
 for ii = 1:size(data.textdata)
     tmp1 = strsplit(data.textdata{ii},'/');
     tmp1 = str2double(tmp1);
